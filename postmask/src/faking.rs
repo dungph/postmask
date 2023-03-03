@@ -1,4 +1,4 @@
-use pgx::{prelude::*, spi::Spi};
+use pgx::prelude::*;
 use rand::seq::IteratorRandom;
 
 use crate::current_user_can_unmask_object;

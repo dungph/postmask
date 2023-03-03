@@ -5,6 +5,16 @@ use crate::current_user_can_unmask_object;
 
 #[pg_extern]
 #[no_mangle]
+fn mask_with_random_date(object: &str, value: Date) -> Result<pgx::Date, pgx::spi::Error> {
+    if current_user_can_unmask_object(object)? {
+        Ok(value)
+    } else {
+        Ok(Date::from_pg_epoch_days(rand::random::<i32>()))
+    }
+}
+
+#[pg_extern]
+#[no_mangle]
 fn mask_with_random_str(object: &str, value: &str, n: i32) -> Result<String, pgx::spi::Error> {
     if current_user_can_unmask_object(object)? {
         Ok(value.to_owned())

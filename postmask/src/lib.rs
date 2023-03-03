@@ -1,7 +1,9 @@
 mod adding_noise;
 mod destruction;
 mod faking;
+mod partial;
 mod randomization;
+
 use pgx::{prelude::*, spi::Spi};
 pgx::pg_module_magic!();
 
