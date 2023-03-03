@@ -1,5 +1,5 @@
 comment = 'postmask:  Created by pgx'
-default_version = '@CARGO_VERSION@'
+default_version = '0.0.0'
 module_pathname = '$libdir/postmask'
 relocatable = false
 superuser = false

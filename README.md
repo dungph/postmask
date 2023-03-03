@@ -1,2 +1,0 @@
-# postmask
-postgres data mask
