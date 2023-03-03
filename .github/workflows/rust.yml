@@ -37,7 +37,7 @@ jobs:
     - name: Install cargo-pgx
       run: cargo install cargo-pgx || true
     - name: Init database
-      run: cargo pgx init
+      run: cargo pgx init --pg11 ~/.pgx/11.19/pgx-install/bin/pg_config --pg12 ~/.pgx/12.14/pgx-install/bin/pg_config --pg13 ~/.pgx/13.10/pgx-install/bin/pg_config --pg14 ~/.pgx/14.7/pgx-install/bin/pg_config --pg15 ~/.pgx/15.2/pgx-install/bin/pg_config || cargo pgx init
     - name: Build
       run: cargo build --verbose
     - name: Run tests
