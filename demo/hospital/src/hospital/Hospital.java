@@ -4,6 +4,8 @@
  */
 package hospital;
 
+import hospital.View.Login;
+
 /**
  *
  * @author dun
@@ -15,6 +17,7 @@ public class Hospital {
      */
     public static void main(String[] args) {
         // TODO code application logic here
+        new Login();
     }
-    
+
 }
