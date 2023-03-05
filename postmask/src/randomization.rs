@@ -1,3 +1,5 @@
+use std::time::Duration;
+
 use pgx::prelude::*;
 use rand::random;
 
@@ -5,17 +7,40 @@ use crate::current_user_can_unmask_object;
 
 #[pg_extern]
 #[no_mangle]
-fn mask_with_random_date(object: &str, value: Date) -> Result<pgx::Date, pgx::spi::Error> {
+fn mask_date_with_random_date(object: &str, value: Date) -> Result<pgx::Date, pgx::spi::Error> {
     if current_user_can_unmask_object(object)? {
         Ok(value)
     } else {
-        Ok(Date::from_pg_epoch_days(rand::random::<i32>()))
+        let range = (time::Date::MAX - time::Date::MIN).whole_seconds().abs() as u64;
+        let date = time::Date::MIN + Duration::from_secs(rand::random::<u64>() % range);
+
+        Ok(date.into())
     }
 }
 
 #[pg_extern]
 #[no_mangle]
-fn mask_with_random_str(object: &str, value: &str, n: i32) -> Result<String, pgx::spi::Error> {
+fn mask_date_with_random_date_between(
+    object: &str,
+    value: Date,
+    min: Date,
+    max: Date,
+) -> Result<pgx::Date, pgx::spi::Error> {
+    if current_user_can_unmask_object(object)? {
+        Ok(value)
+    } else {
+        let range = (time::Date::try_from(max).unwrap() - time::Date::try_from(min).unwrap())
+            .whole_seconds()
+            .abs() as u64;
+        let date = time::Date::MIN + Duration::from_secs(rand::random::<u64>() % range);
+
+        Ok(date.into())
+    }
+}
+
+#[pg_extern]
+#[no_mangle]
+fn mask_str_with_random_str(object: &str, value: &str, n: i32) -> Result<String, pgx::spi::Error> {
     if current_user_can_unmask_object(object)? {
         Ok(value.to_owned())
     } else {
@@ -30,7 +55,7 @@ fn mask_with_random_str(object: &str, value: &str, n: i32) -> Result<String, pgx
 
 #[pg_extern]
 #[no_mangle]
-fn mask_with_random_integer(object: &str, value: i32) -> Result<i32, pgx::spi::Error> {
+fn mask_int_with_random_int(object: &str, value: i32) -> Result<i32, pgx::spi::Error> {
     if current_user_can_unmask_object(object)? {
         Ok(value.to_owned())
     } else {
@@ -40,7 +65,7 @@ fn mask_with_random_integer(object: &str, value: i32) -> Result<i32, pgx::spi::E
 
 #[pg_extern]
 #[no_mangle]
-fn mask_with_random_integer_between(
+fn mask_int_with_random_int_between(
     object: &str,
     value: i32,
     min: i32,
@@ -59,7 +84,7 @@ fn mask_with_random_integer_between(
 
 #[pg_extern]
 #[no_mangle]
-fn mask_with_random_phone(
+fn mask_str_with_random_phone(
     object: &str,
     value: &str,
     prefix: &str,

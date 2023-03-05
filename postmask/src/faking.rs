@@ -6,7 +6,7 @@ use crate::current_user_can_unmask_object;
 const FIRST_NAMES: &str = include_str!("./faking_data/first_names.txt");
 const MID_NAMES: &str = include_str!("./faking_data/middle_names.txt");
 const LAST_NAMES: &str = include_str!("./faking_data/last_names.txt");
-const PROVINDES: &str = include_str!("./faking_data/provides.txt");
+const PROVINCES: &str = include_str!("./faking_data/provinces.txt");
 
 #[pg_extern]
 #[no_mangle]
@@ -20,7 +20,7 @@ fn mask_str_with_fake_name(object: &str, value: &str) -> Result<String, pgx::spi
 
 #[pg_extern]
 #[no_mangle]
-fn mask_str_with_fake_provinde(object: &str, value: &str) -> Result<String, pgx::spi::Error> {
+fn mask_str_with_fake_province(object: &str, value: &str) -> Result<String, pgx::spi::Error> {
     if current_user_can_unmask_object(object)? {
         Ok(value.to_owned())
     } else {
@@ -42,5 +42,5 @@ fn random_name() -> String {
 #[no_mangle]
 fn random_provide() -> String {
     let mut rng = rand::thread_rng();
-    PROVINDES.lines().choose(&mut rng).unwrap().to_string()
+    PROVINCES.lines().choose(&mut rng).unwrap().to_string()
 }

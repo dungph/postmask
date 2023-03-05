@@ -12,8 +12,9 @@ pg13 = ["pgx/pg13", "pgx-tests/pg13" ]
 pg_test = []
 
 [dependencies]
-pgx = "=0.7.2"
+pgx = {version = "=0.7.2", features=["time-crate"]}
 rand = "0.8.5"
+time = "0.3.20"
 
 [dev-dependencies]
 pgx-tests = "=0.7.2"
